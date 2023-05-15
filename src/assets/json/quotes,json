@@ -1,0 +1,26 @@
+[
+    {
+        "text": 'avatar',
+        "category": 'film'
+    },
+    {
+        "text": 'narnia',
+        "category": 'film'
+    },
+    {
+        "text": 'lot nad kukułczym gniazdem',
+        "category": 'książka'
+    },
+    {
+        "text": 'metro',
+        "category": 'spektakl'
+    },
+    {
+        "text": 'pan tadeusz',
+        "category": 'książka'
+    },
+    {
+        "text": 'ogniem i mieczem',
+        "category": 'książka'
+    }
+]
