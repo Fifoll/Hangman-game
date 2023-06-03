@@ -1,11 +1,26 @@
-<section id="hangman">
-    <div id="output">
+<section class="hangman">
+    <div class="output">
         <div class="step" *ngFor="let imageCounter of imageCounters" [class.active]="imageCounter === (currentStep + 1)"><img src="assets/images/{{imageCounter}}.png"></div>
     </div>
-    <div id="word">{{ content }}</div>
-    <div id="category">Kategoria: {{ category }}</div>
-    <div id="letters">
-        <button *ngFor="let letter of letters" (click)="guess(letter, $event)">{{ letter }}</button>
+    <div class="word">{{ content }}</div>
+    <div class="wrapper">
+
+        <div class="hints" *ngIf="!endView">
+            <div class="wrapper">
+                <p>{{ hintCounter }} / {{ maxHint }} hints used</p>
+                <button class="btn" *ngIf="hintCounter < maxHint" (click)="showhint()">Show hint</button>
+                <span class="warning" *ngIf="hintCounter == maxHint">No more hints!</span>
+            </div>
+            <ul class="hints__list" *ngIf="hintCounter >= 1">
+                <li>Specie: {{ character.specie }}</li>
+                <li *ngIf="hintCounter >= 2">Number of episodes: {{ character.episodesNum }}</li>
+                <li *ngIf="hintCounter >= 3">Gender: {{ character.gender }}</li>
+                <li *ngIf="hintCounter >= 4"><img src="{{ character.image }}"></li>
+            </ul>
+        </div>
+        <div class="letters">
+            <button class="letter" *ngFor="let letter of letters" (click)="guess(letter, $event)">{{ letter }}</button>
+        </div>
     </div>
-    <button (click)="reset()" *ngIf="endView">reset</button>
+    <button class="btn" (click)="reset()" *ngIf="endView">Next character</button>
 </section>

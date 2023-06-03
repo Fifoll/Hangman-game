@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GameService } from '../game.service';
+import { Character } from 'app/character';
 
 @Component({
   selector: 'app-game',
@@ -17,34 +18,44 @@ export class GameComponent implements OnInit {
   text: string = '';
   category: string = '';
   endView: boolean = false;
+  hintCounter: number = 0;
+  maxHint: number = 4;
 
-  quotes = [
-    {
-        text: 'pan tadeusz',
-        category: 'Utwór literacji'
-    },
-    {
-        text: 'ogniem i mieczem',
-        category: 'utwór literacki'
-    },
-    {
-        text: 'avatar',
-        category: 'film'
-    },
-  ];
+  character:Character = {
+    name: '',
+    specie: '',
+    episodesNum: 0,
+    gender: '',
+    image: '',
+  };
 
-  constructor(service: GameService) { }
+  constructor(private service: GameService) { }
   
   ngOnInit(): void {
-    this.getRandomQuote();
+    this.getRandomCharacter();
     this.drawLetters();
-    this.getQuoteContent();
   }
 
-  getRandomQuote() {
-    this.text = this.quotes[Math.floor(Math.random()*this.quotes.length)].text;
-    this.category = this.quotes[Math.floor(Math.random()*this.quotes.length)].category;
+  getRandomCharacter() {
+    this.service.getGameData().subscribe({
+      next: value => {
+        const data: any = value;
+        
+        const randomElement = data.results[Math.floor(Math.random()*data.results.length)];
+
+        this.character.name = randomElement.name.toLowerCase();
+        this.character.specie = randomElement.species;
+        this.character.episodesNum = randomElement.episode.length;
+        this.character.gender = randomElement.gender
+        this.character.image = randomElement.image;
+
+        console.log(this.character);
+        
+      },
+      complete: () => this.getQuoteContent()
+    })
   }
+
   
   drawLetters() {
     for (let i=0; i<26; i++) {
@@ -73,7 +84,7 @@ export class GameComponent implements OnInit {
   
   getQuoteContent() {
     this.content = '';
-    for(const char of this.text) {
+    for(const char of this.character.name) {
       if(char === ' ' || this.guessedLetters.includes(char)) {
         this.content += char;
       } else {
@@ -83,10 +94,20 @@ export class GameComponent implements OnInit {
   }
   
   checkIfTitleContainsLetter(letter: string) {
-    if(this.text.includes(letter)) {
+    if(this.character.name.includes(letter)) {
       return true;
     }
     return false;
+  }
+
+  showhint() {
+    if(this.hintCounter <= this.maxHint) {
+      this.hintCounter++;
+    }
+  }
+
+  resetHints() {
+    this.hintCounter = 0;
   }
 
   endGame() {
@@ -95,12 +116,12 @@ export class GameComponent implements OnInit {
   }
   
   loosing() {
-    this.content = "Przegrałeś, nie odgadłeś hasła: " + this.text;
+    this.content = "You lost, the character name was: " + this.character.name;
     this.endGame();
   }
   
   winning() {
-    this.content = "Gratulacje, odgadłeś hasło: " + this.text;
+    this.content = "You win using " + this.hintCounter + " hints. The character name was: " + this.character.name;
     this.endGame();
   }
 
@@ -108,9 +129,9 @@ export class GameComponent implements OnInit {
     this.endView = false;
     this.guessedLetters = [];
     this.currentStep = 0;
-    this.getRandomQuote();
+    this.getRandomCharacter();
     this.drawLetters();
-    this.getQuoteContent();
+    this.resetHints();
   }
 
 }
