@@ -1,6 +1,6 @@
 export interface Character {
     name: string,
-    specie: string,
+    species: string,
     episodesNum: number,
     gender: string,
     image: string

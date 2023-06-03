@@ -23,7 +23,7 @@ export class GameComponent implements OnInit {
 
   character:Character = {
     name: '',
-    specie: '',
+    species: '',
     episodesNum: 0,
     gender: '',
     image: '',
@@ -44,13 +44,11 @@ export class GameComponent implements OnInit {
         const randomElement = data.results[Math.floor(Math.random()*data.results.length)];
 
         this.character.name = randomElement.name.toLowerCase();
-        this.character.specie = randomElement.species;
+        this.character.species = randomElement.species;
         this.character.episodesNum = randomElement.episode.length;
         this.character.gender = randomElement.gender
         this.character.image = randomElement.image;
-
-        console.log(this.character);
-        
+                
       },
       complete: () => this.getQuoteContent()
     })

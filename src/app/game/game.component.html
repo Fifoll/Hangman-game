@@ -12,7 +12,7 @@
                 <span class="warning" *ngIf="hintCounter == maxHint">No more hints!</span>
             </div>
             <ul class="hints__list" *ngIf="hintCounter >= 1">
-                <li>Specie: {{ character.specie }}</li>
+                <li>Species: {{ character.species }}</li>
                 <li *ngIf="hintCounter >= 2">Number of episodes: {{ character.episodesNum }}</li>
                 <li *ngIf="hintCounter >= 3">Gender: {{ character.gender }}</li>
                 <li *ngIf="hintCounter >= 4"><img src="{{ character.image }}"></li>
